@@ -4,22 +4,17 @@ import (
 	"fmt"
 	"go-unit-converter/internal/config"
 	"go-unit-converter/internal/middleware"
-	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
-type handlerInterface interface {
-	converter
-}
-
-type converter interface {
+type convertHandler interface {
 	ConvertLengthHandler(c *gin.Context)
 	ConvertWeightHandler(c *gin.Context)
 	ConvertTemperatureHandler(c *gin.Context)
 }
 
-func NewServer(cfg *config.Config, handler handlerInterface) (*http.Server, error) {
+func NewServer(cfg *config.Config, handler convertHandler) (*gin.Engine, error) {
 	var r *gin.Engine
 	switch cfg.Environment {
 	case "dev":
@@ -38,10 +33,5 @@ func NewServer(cfg *config.Config, handler handlerInterface) (*http.Server, erro
 	api.POST("/weight", handler.ConvertWeightHandler)
 	api.POST("/temperature", handler.ConvertTemperatureHandler)
 
-	server := &http.Server{
-		Addr:    ":8080",
-		Handler: r,
-	}
-
-	return server, nil
+	return r, nil
 }

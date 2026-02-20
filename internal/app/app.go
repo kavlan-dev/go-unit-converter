@@ -26,14 +26,20 @@ func Run() {
 	}
 	defer logger.Sync()
 
-	service := service.NewService()
-	handler := handler.NewHandler(service, logger)
-	server, err := router.NewServer(cfg, handler)
+	convertService := service.NewConvertService()
+	convertHandler := handler.NewConvertHandler(convertService, logger)
+
+	r, err := router.NewServer(cfg, convertHandler)
 	if err != nil {
 		logger.Fatalf("Ошибка инициализации сервера: %v", err)
 	}
 
-	log.Println("Сервер запущен")
+	server := &http.Server{
+		Addr:    ":8080",
+		Handler: r,
+	}
+
+	logger.Info("Сервер запущен")
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()

@@ -5,7 +5,14 @@ import (
 	"go-unit-converter/internal/util"
 )
 
-func (s *Service) ConvertLength(req *model.ConversionRequest) (*model.ConversionResponse, error) {
+type convertService struct {
+}
+
+func NewConvertService() *convertService {
+	return &convertService{}
+}
+
+func (s *convertService) ConvertLength(req *model.ConversionRequest) (*model.ConversionResponse, error) {
 	valueInMeters, err := util.ConvertToMeters(req.FromValue, req.FromUnit)
 	if err != nil {
 		return nil, err
@@ -19,7 +26,7 @@ func (s *Service) ConvertLength(req *model.ConversionRequest) (*model.Conversion
 	return &model.ConversionResponse{Result: result}, nil
 }
 
-func (s *Service) ConvertWeight(req *model.ConversionRequest) (*model.ConversionResponse, error) {
+func (s *convertService) ConvertWeight(req *model.ConversionRequest) (*model.ConversionResponse, error) {
 	valueInKg, err := util.ConvertToKilograms(req.FromValue, req.FromUnit)
 	if err != nil {
 		return nil, err
@@ -33,7 +40,7 @@ func (s *Service) ConvertWeight(req *model.ConversionRequest) (*model.Conversion
 	return &model.ConversionResponse{Result: result}, nil
 }
 
-func (s *Service) ConvertTemperature(req *model.ConversionRequest) (*model.ConversionResponse, error) {
+func (s *convertService) ConvertTemperature(req *model.ConversionRequest) (*model.ConversionResponse, error) {
 	valueInCelsius, err := util.ConvertToCelsius(req.FromValue, req.FromUnit)
 	if err != nil {
 		return nil, err

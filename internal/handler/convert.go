@@ -5,15 +5,28 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 )
 
-type converterService interface {
+type convertService interface {
 	ConvertLength(*model.ConversionRequest) (*model.ConversionResponse, error)
 	ConvertWeight(*model.ConversionRequest) (*model.ConversionResponse, error)
 	ConvertTemperature(*model.ConversionRequest) (*model.ConversionResponse, error)
 }
 
-func (h *Handler) ConvertLengthHandler(c *gin.Context) {
+type ConvertHandler struct {
+	log     *zap.SugaredLogger
+	service convertService
+}
+
+func NewConvertHandler(service convertService, logger *zap.SugaredLogger) *ConvertHandler {
+	return &ConvertHandler{
+		log:     logger,
+		service: service,
+	}
+}
+
+func (h *ConvertHandler) ConvertLengthHandler(c *gin.Context) {
 	var req model.ConversionRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
 		h.log.Error(err)
@@ -31,7 +44,7 @@ func (h *Handler) ConvertLengthHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, result)
 }
 
-func (h *Handler) ConvertWeightHandler(c *gin.Context) {
+func (h *ConvertHandler) ConvertWeightHandler(c *gin.Context) {
 	var req model.ConversionRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
 		h.log.Error(err)
@@ -49,7 +62,7 @@ func (h *Handler) ConvertWeightHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, result)
 }
 
-func (h *Handler) ConvertTemperatureHandler(c *gin.Context) {
+func (h *ConvertHandler) ConvertTemperatureHandler(c *gin.Context) {
 	var req model.ConversionRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
 		h.log.Error(err)
