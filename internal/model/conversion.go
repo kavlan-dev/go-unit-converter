@@ -16,3 +16,7 @@ type ConversionRequest struct {
 type ConversionResponse struct {
 	Result float64 `json:"result"`
 }
+
+func NewConversionResponse(result float64) *ConversionResponse {
+	return &ConversionResponse{Result: result}
+}

@@ -23,7 +23,8 @@ func (s *convertService) ConvertLength(req *model.ConversionRequest) (*model.Con
 		return nil, err
 	}
 
-	return &model.ConversionResponse{Result: result}, nil
+	resp := model.NewConversionResponse(result)
+	return resp, nil
 }
 
 func (s *convertService) ConvertWeight(req *model.ConversionRequest) (*model.ConversionResponse, error) {
@@ -37,7 +38,8 @@ func (s *convertService) ConvertWeight(req *model.ConversionRequest) (*model.Con
 		return nil, err
 	}
 
-	return &model.ConversionResponse{Result: result}, nil
+	resp := model.NewConversionResponse(result)
+	return resp, nil
 }
 
 func (s *convertService) ConvertTemperature(req *model.ConversionRequest) (*model.ConversionResponse, error) {
@@ -51,5 +53,6 @@ func (s *convertService) ConvertTemperature(req *model.ConversionRequest) (*mode
 		return nil, err
 	}
 
-	return &model.ConversionResponse{Result: result}, nil
+	resp := model.NewConversionResponse(result)
+	return resp, nil
 }
