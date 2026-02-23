@@ -17,7 +17,7 @@ func InitConfig() (*Config, error) {
 	config.CORS = strings.Split(envOrDefault("CORS", "*"), ",")
 
 	if config.Environment != "dev" && config.Environment != "prod" {
-		return nil, fmt.Errorf("Не верно указано окружение %s", config.Environment)
+		return nil, fmt.Errorf("не верно указано окружение %s", config.Environment)
 	}
 
 	return &config, nil

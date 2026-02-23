@@ -14,7 +14,7 @@ type convertHandler interface {
 	ConvertTemperatureHandler(c *gin.Context)
 }
 
-func NewServer(cfg *config.Config, handler convertHandler) (*gin.Engine, error) {
+func New(cfg *config.Config, handler convertHandler) (*gin.Engine, error) {
 	var r *gin.Engine
 	switch cfg.Environment {
 	case "dev":
@@ -24,7 +24,7 @@ func NewServer(cfg *config.Config, handler convertHandler) (*gin.Engine, error) 
 		r = gin.New()
 		r.Use(gin.Recovery(), gin.Logger())
 	default:
-		return nil, fmt.Errorf("Не верно указано окружение %s", cfg.Environment)
+		return nil, fmt.Errorf("не верно указано окружение %s", cfg.Environment)
 	}
 	r.Use(middleware.CORSMiddleware(cfg.CORS))
 

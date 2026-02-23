@@ -9,71 +9,71 @@ import (
 )
 
 type convertService interface {
-	ConvertLength(*model.ConversionRequest) (*model.ConversionResponse, error)
-	ConvertWeight(*model.ConversionRequest) (*model.ConversionResponse, error)
-	ConvertTemperature(*model.ConversionRequest) (*model.ConversionResponse, error)
+	ConvertLength(model.ConversionRequest) (model.ConversionResponse, error)
+	ConvertWeight(model.ConversionRequest) (model.ConversionResponse, error)
+	ConvertTemperature(model.ConversionRequest) (model.ConversionResponse, error)
 }
 
-type ConvertHandler struct {
+type convertHandler struct {
 	log     *zap.SugaredLogger
 	service convertService
 }
 
-func NewConvertHandler(service convertService, logger *zap.SugaredLogger) *ConvertHandler {
-	return &ConvertHandler{
+func NewConvertHandler(service convertService, logger *zap.SugaredLogger) *convertHandler {
+	return &convertHandler{
 		log:     logger,
 		service: service,
 	}
 }
 
-func (h *ConvertHandler) ConvertLengthHandler(c *gin.Context) {
+func (h *convertHandler) ConvertLengthHandler(c *gin.Context) {
 	var req model.ConversionRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
 		h.log.Error(err)
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Ошибка в запросе"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ошибка в запросе"})
 		return
 	}
 
-	result, err := h.service.ConvertLength(&req)
+	result, err := h.service.ConvertLength(req)
 	if err != nil {
-		h.log.Error(err)
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Ошибка при конвертации длины"})
+		h.log.Errorf("ConvertLength: %w", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "ошибка при конвертации длины"})
 		return
 	}
 
 	c.JSON(http.StatusOK, result)
 }
 
-func (h *ConvertHandler) ConvertWeightHandler(c *gin.Context) {
+func (h *convertHandler) ConvertWeightHandler(c *gin.Context) {
 	var req model.ConversionRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
 		h.log.Error(err)
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Ошибка в запросе"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ошибка в запросе"})
 		return
 	}
 
-	result, err := h.service.ConvertWeight(&req)
+	result, err := h.service.ConvertWeight(req)
 	if err != nil {
-		h.log.Error(err)
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Ошибка при конвертации веса"})
+		h.log.Errorf("ConvertWeight: %w", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "ошибка при конвертации веса"})
 		return
 	}
 
 	c.JSON(http.StatusOK, result)
 }
 
-func (h *ConvertHandler) ConvertTemperatureHandler(c *gin.Context) {
+func (h *convertHandler) ConvertTemperatureHandler(c *gin.Context) {
 	var req model.ConversionRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
 		h.log.Error(err)
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Ошибка в запросе"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ошибка в запросе"})
 		return
 	}
 
-	result, err := h.service.ConvertTemperature(&req)
+	result, err := h.service.ConvertTemperature(req)
 	if err != nil {
-		h.log.Error(err)
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Ошибка при конвертации температуры"})
+		h.log.Errorf("ConvertTemperature: %w", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "ошибка при конвертации температуры"})
 		return
 	}
 

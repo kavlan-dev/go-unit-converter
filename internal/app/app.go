@@ -17,21 +17,21 @@ import (
 func Run() {
 	cfg, err := config.InitConfig()
 	if err != nil {
-		log.Fatalf("Ошибка инициализации конфигурации: %v", err)
+		log.Fatalf("InitConfig: %v", err)
 	}
 
 	logger, err := util.NewLogger(cfg.Environment)
 	if err != nil {
-		log.Fatalf("Ошибка инициализации логгера: %v", err)
+		log.Fatalf("NewLogger: %v", err)
 	}
 	defer logger.Sync()
 
 	convertService := service.NewConvertService()
 	convertHandler := handler.NewConvertHandler(convertService, logger)
 
-	r, err := router.NewServer(cfg, convertHandler)
+	r, err := router.New(cfg, convertHandler)
 	if err != nil {
-		logger.Fatalf("Ошибка инициализации сервера: %v", err)
+		logger.Fatalf("NewServer: %v", err)
 	}
 
 	server := &http.Server{
@@ -52,7 +52,7 @@ func Run() {
 		logger.Info("Остановка...")
 		cancel()
 		if err := server.Shutdown(ctx); err != nil {
-			logger.Errorf("Ошибка остановки сервера %v:", err)
+			logger.Errorf("Ошибка остановки сервера: %v", err)
 		}
 	}()
 

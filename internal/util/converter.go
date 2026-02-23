@@ -1,6 +1,8 @@
 package util
 
-import "errors"
+import (
+	"fmt"
+)
 
 func ConvertToMeters(value float64, unit string) (float64, error) {
 	switch unit {
@@ -21,7 +23,7 @@ func ConvertToMeters(value float64, unit string) (float64, error) {
 	case "mile", "mi":
 		return value * 1609.34, nil
 	default:
-		return 0, errors.New("unsupported length unit: " + unit)
+		return 0, fmt.Errorf("не поддерживаемая единица длины: %s", unit)
 	}
 }
 
@@ -44,7 +46,7 @@ func ConvertFromMeters(value float64, unit string) (float64, error) {
 	case "mile", "mi":
 		return value / 1609.34, nil
 	default:
-		return 0, errors.New("unsupported length unit: " + unit)
+		return 0, fmt.Errorf("не поддерживаемая единица длины: %s", unit)
 	}
 }
 
@@ -61,7 +63,7 @@ func ConvertToKilograms(value float64, unit string) (float64, error) {
 	case "pound", "lb":
 		return value * 0.453592, nil
 	default:
-		return 0, errors.New("unsupported weight unit: " + unit)
+		return 0, fmt.Errorf("не поддерживаемая единица массы: %s", unit)
 	}
 }
 
@@ -78,7 +80,7 @@ func ConvertFromKilograms(value float64, unit string) (float64, error) {
 	case "pound", "lb":
 		return value / 0.453592, nil
 	default:
-		return 0, errors.New("unsupported weight unit: " + unit)
+		return 0, fmt.Errorf("не поддерживаемая единица массы: %s", unit)
 	}
 }
 
@@ -91,7 +93,7 @@ func ConvertToCelsius(value float64, unit string) (float64, error) {
 	case "kelvin", "K":
 		return value - 273.15, nil
 	default:
-		return 0, errors.New("unsupported temperature unit: " + unit)
+		return 0, fmt.Errorf("не поддерживаемая единица температуры: %s", unit)
 	}
 }
 
@@ -104,6 +106,6 @@ func ConvertFromCelsius(value float64, unit string) (float64, error) {
 	case "kelvin", "K":
 		return value + 273.15, nil
 	default:
-		return 0, errors.New("unsupported temperature unit: " + unit)
+		return 0, fmt.Errorf("не поддерживаемая единица температуры: %s", unit)
 	}
 }

@@ -20,5 +20,9 @@ func NewLogger(env string) (*zap.SugaredLogger, error) {
 		return nil, fmt.Errorf("Не известное окружение %s", env)
 	}
 
-	return logger.Sugar(), err
+	if err != nil {
+		return nil, fmt.Errorf("Ошибка создания логгера: %w", err)
+	}
+
+	return logger.Sugar(), nil
 }
